@@ -1,27 +1,21 @@
 import express from 'express';
-import pkg from 'pg';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import connection from './database/database.js';
+import categoriesRouter from './routers/categoriesRouter.js';
 
-const { Pool } = pkg;
-
-const connection = new Pool({
-    host: 'localhost',
-    port: 5432,
-    user: 'postgres',
-    password: '03022001',
-    database: 'boardcamp'
-});
-
+dotenv.config();
 const server = express();
+server.use(express.json());
+server.use(cors());
 
-server.get('/games', async (req, res) => {
-    const games = await connection.query('SELECT * FROM games;');
+server.use(categoriesRouter);
 
-    console.log(games);
-    res.send(games.rows);
+server.get('/status', async (req, res) => {
+    const status = await connection.query('SELECT * FROM games;');
+
+    console.log(status.rows);
+    res.sendStatus(200);
 });
 
-server.get('/', (req, res) => {
-    res.send('OK');
-});
-
-server.listen(4000, () => console.log('Magic happens on port 4000'));
+server.listen(process.env.PORT, console.log(`Magic happens on port ${process.env.PORT}`));
