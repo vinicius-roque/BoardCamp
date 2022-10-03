@@ -48,7 +48,7 @@ async function createRent(req, res) {
             returnDate,
             originalPrice,
             delayFee,
-        ]
+        ];
 
         connection.query('INSERT INTO rentals ("customerId", "gameId", "rentDate", "daysRented", "returnDate", "originalPrice", "delayFee") VALUES ($1, $2, $3, $4, $5, $6, $7);', rentsArray);
 
@@ -97,7 +97,7 @@ async function showRents(req, res) {
                 categoryName: rent.categoryName,
             },
         }
-    })
+    });
 
     res.status(200).send(allRentsArray);
 }
@@ -115,7 +115,7 @@ async function deleteRent(req, res) {
         return res.status(400).send("It's not possible to delete a rent that has already been completed!");
     } 
 
-    connection.query('DELETE FROM rentals WHERE id = $1;', [id])
+    connection.query('DELETE FROM rentals WHERE id = $1;', [id]);
 
     res.sendStatus(200);
 }
